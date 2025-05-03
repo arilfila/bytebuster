@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteBuster Class</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </div>
+    <div class="side-menu" id="sideMenu">
+        <ul class="nav-menu">
+            <li><a href="index.php">Beranda</a></li>
+            <li><a href="maintenance.php">Profil</a></li>
+            <li><a href="maintenance.php">Siswa</a></li>
+            <li><a href="maintenance.php">Kegiatan</a></li>
+            <li><a href="maintenance.php">Kontak</a></li>
+        </ul>
+    </div>
+</nav>
+
+<header class="fade-in-up fade-delay-1">
+    <h1>Selamat Datang di ByteBuster Class!</h1>
+</header>
+
+<section class="info-umum fade-in-up fade-delay-2">
+    <h2>Kenalan YUK!</h2>
+    <p>
+        👋 Hai! Kami dari kelas <strong>ByteBuster</strong>, kumpulan siswa kreatif yang semangat di dunia teknologi dan digital.<br><br>
+        🚀 Belajar di sini itu seru, bukan beban — penuh canda, tawa, dan tantangan baru tiap hari!<br><br>
+        🌱💻 Website ini jadi tempat kami berbagi cerita, tumbuh bareng, dan jadi versi terbaik diri kami!
+    </p>
+</section>
+
+<section class="wali-kelas fade-in-up fade-delay-3">
+    <h2>Wali Kelas & Guru TKJ</h2>
+    <div class="guru-wrapper">
+        <div class="guru-item">
+            <img src="images/bu ina.jpg" alt="Foto Wali Kelas" class="foto-wali">
+            <p><strong>Wali Kelas:</strong><br> Maksalmina Farha, M.Si</p>
+        </div>
+        <div class="guru-item">
+            <img src="images/bu rahma.jpg" alt="Guru TKJ" class="foto-wali">
+            <p><strong>Guru TKJ:</strong><br> Rahma Rizania, S.Kom</p>
+        </div>
+    </div>
+</section>
+
+    <section class="siswa-kelas">
+    <h2>Daftar Siswa</h2>
+    <div class="grid-siswa" id="gridSiswa">
+    </div>
+    </section>
+
+
+    <section class="kegiatan">
+    <h2>Kegiatan Kita</h2>
+    <div class="list-kegiatan" id="listKegiatan">
+        <!-- Kegiatan akan dimuat oleh JavaScript -->
+    </div>
+</section>
+
+    <footer>
+        <p>&copy; 2025 ByteBuster Class. All rights reserved.</p>
+    </footer>
+
+    <script>
+    fetch('kegiatan.json')
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('listKegiatan');
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'kegiatan-item';
+            div.innerHTML = `
+                <img src="${item.gambar}" alt="${item.judul}">
+                <div>
+                    <h4>${item.judul}</h4>
+                    <p>${item.deskripsi}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    })
+    .catch(error => {
+        console.error('Gagal memuat data kegiatan:', error);
+    });
+    
+    fetch('siswa.json')
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('gridSiswa');
+        data.forEach(siswa => {
+            const div = document.createElement('div');
+            div.classList.add('siswa');
+            div.innerHTML = `
+                <img src="images/${siswa.foto}" alt="${siswa.nama}">
+                <p><strong>Nama:</strong> ${siswa.nama}</p>
+                <p><strong>TTL:</strong> ${siswa.ttl}</p>
+                <p><strong>Kontak:</strong> ${siswa.kontak}</p>
+            `;
+            container.appendChild(div);
+        });
+    })
+    .catch(error => {
+        console.error('Gagal memuat data siswa:', error);
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('sideMenu');
+    const body = document.querySelector('body');
+
+    // Fungsi untuk membuka dan menutup menu
+    hamburger.addEventListener('click', (event) => {
+        sideMenu.classList.toggle('show');
+        event.stopPropagation(); // Mencegah klik pada tombol hamburger menutup menu
+    });
+
+    // Menutup menu jika klik di luar menu
+    body.addEventListener('click', (event) => {
+        if (!sideMenu.contains(event.target) && !hamburger.contains(event.target)) {
+            sideMenu.classList.remove('show');
+        }
+    });
+</script>
+
+</body>
+</html>
